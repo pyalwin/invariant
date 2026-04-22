@@ -1,56 +1,89 @@
 # Invariant
 
-Invariant is a local-first study app for staff-level data structures and algorithms interview prep in Python. It is built around the idea that senior interview signal comes from choosing the right approach, defending tradeoffs, and reasoning about scale, not just producing code.
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Built with React](https://img.shields.io/badge/React-18-61dafb.svg)](https://react.dev/)
+[![Powered by Bun](https://img.shields.io/badge/Bun-1.3-black.svg)](https://bun.sh/)
 
-The app combines structured topic pages, progress tracking, review queues, mock interview flow, and in-browser Python execution through Pyodide.
+Invariant is a local-first study app for staff-level data structures and algorithms interview prep in Python.
 
-## What It Covers
+It focuses on the skill senior interviews actually test: choosing the right approach, defending tradeoffs, reasoning from invariants, and explaining what changes at scale.
 
-Every topic follows a six-step loop:
+## Features
 
-1. Brief: the invariant, when to use the structure, Python cost model, and system connections.
-2. Visualize: a small trace of how the structure or algorithm evolves.
-3. Tradeoffs: when this approach wins and when it does not.
-4. Drill: approach-selection prompts with explanations.
-5. Implement: a Python exercise with hidden-test guidance.
-6. Scale: how the same problem changes at 1K, 1M, 1B, and distributed scale.
+- Structured six-step learning loop for every topic
+- Python-specific cost models and implementation notes
+- Staff-style approach-selection drills
+- Scale-up prompts from 1K to distributed systems
+- In-browser Python execution through Pyodide
+- Local progress, mock interview history, and review state in SQLite
+- React/Vite frontend with a Bun + Hono local API
 
-Current topic coverage:
+## Topics
 
-- Linear: arrays/lists, strings, linked lists, stacks and queues
-- Hashing: dicts and sets, Bloom filters
-- Heaps: `heapq` patterns
-- Trees: binary trees, BSTs, segment trees, Fenwick trees, tries
-- Graphs: BFS, DFS, Dijkstra, Bellman-Ford, Union-Find, MST
-- Dynamic Programming: 1D, 2D, bitmask
-- Strings: KMP
-- Advanced: consistent hashing, LSM trees
+Current coverage:
+
+| Module | Topics |
+| --- | --- |
+| Linear | Arrays & Lists, Strings, Linked Lists, Stacks & Queues |
+| Hashing | Dicts & Sets, Bloom Filters |
+| Heaps | `heapq` Patterns |
+| Trees | Binary Trees, BST, Segment Trees, Fenwick Trees, Tries |
+| Graphs | BFS, DFS, Dijkstra, Bellman-Ford, Union-Find, MST |
+| Dynamic Programming | 1D, 2D, Bitmask |
+| Strings | KMP |
+| Advanced | Consistent Hashing, LSM Trees |
+
+Each topic has:
+
+1. **Brief**: invariant, use cases, Python cost model, and system connections
+2. **Visualize**: trace of the core algorithm or data structure behavior
+3. **Tradeoffs**: comparison against adjacent approaches
+4. **Drill**: approach-selection prompts with explanations
+5. **Implement**: Python exercise with hidden-test guidance
+6. **Scale**: 1K, 1M, 1B, and distributed-scale reasoning
+
+## Screens
+
+- **Topics**: module/topic catalog with progress indicators
+- **Topic**: six-step study loop
+- **Mock**: interview-style practice flow
+- **Review**: spaced-repetition queue
+- **History**: saved mock/interview attempts
 
 ## Tech Stack
 
-- React 18 + Vite
-- TypeScript
-- Tailwind CSS
-- Zustand for client state
-- Hono on Bun for the local API
+- [React](https://react.dev/) 18
+- [Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Zustand](https://zustand-demo.pmnd.rs/)
+- [Bun](https://bun.sh/)
+- [Hono](https://hono.dev/)
 - SQLite via `bun:sqlite`
-- Pyodide in a Web Worker for browser-side Python execution
-- Biome for linting/formatting
+- [Pyodide](https://pyodide.org/) in a Web Worker
+- [Biome](https://biomejs.dev/) for formatting and linting
 
 ## Requirements
 
 - Bun 1.3+
-- Node.js 20+ is recommended for the Vite/tooling ecosystem
+- Node.js 20+ recommended
 
-The first Python execution loads Pyodide from jsDelivr:
+Python execution loads Pyodide from jsDelivr on first worker boot:
 
 ```text
 https://cdn.jsdelivr.net/pyodide/v0.26.0/full/
 ```
 
-So the app can run locally, but code execution needs network access on first Pyodide load unless you vendor Pyodide separately.
+The app is local-first, but first-time code execution needs network access unless Pyodide is vendored.
 
-## Quick Start
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/pyalwin/invariant.git
+cd invariant
+```
 
 Install dependencies:
 
@@ -58,30 +91,24 @@ Install dependencies:
 bun install
 ```
 
-Run the app in development:
+Start the app:
 
 ```bash
 bun run dev
 ```
 
-This starts:
+Open:
 
-- Vite client at `http://localhost:5173`
-- Bun API server at `http://localhost:3001`
-
-The Vite dev server proxies `/api/*` to the Bun server.
-
-Build for production:
-
-```bash
-bun run build
+```text
+http://localhost:5173
 ```
 
-Run the API server directly:
+Development starts two processes:
 
-```bash
-bun run start
-```
+- Vite client: `http://localhost:5173`
+- Bun API: `http://localhost:3001`
+
+Vite proxies `/api/*` to the Bun API.
 
 ## Configuration
 
@@ -92,7 +119,7 @@ PORT=3001
 DATABASE_PATH=/absolute/path/to/db.sqlite
 ```
 
-If `DATABASE_PATH` is not set, the app stores SQLite data at:
+Default database path:
 
 ```text
 ~/.invariant/db.sqlite
@@ -100,33 +127,46 @@ If `DATABASE_PATH` is not set, the app stores SQLite data at:
 
 See [.env.example](.env.example).
 
-## Useful Commands
+## Scripts
 
 ```bash
-bun run dev       # start Vite + Bun API
-bun run build     # typecheck and build the client
-bun run test      # run Bun tests
-bun run lint      # run Biome checks
-bun run format    # format src and server
+bun run dev       # Start Vite and the Bun API
+bun run build     # Typecheck and build production assets
+bun run start     # Start the Bun API server
+bun run test      # Run tests with Bun
+bun run lint      # Run Biome checks
+bun run format    # Format src and server
 ```
 
-Note: the current repository has some older lint debt outside the study-plan work. `bun run build` is the main production sanity check.
+## Architecture
 
-## Project Structure
+```text
+Browser
+  React app
+    Pages, topic renderer, Zustand stores
+  Web Worker
+    Pyodide runtime for Python execution
+
+Bun server
+  Hono API routes
+  SQLite persistence
+```
+
+Key paths:
 
 ```text
 src/
-  content/               # Typed study-plan content by module
-  components/            # Shared React components and study renderer
-  pages/                 # Route-level pages
-  store/                 # Zustand stores
-  workers/               # Pyodide worker and protocol
-  lib/topics.ts          # Topic manifest
+  content/        Typed study-plan content
+  components/     Shared React components
+  pages/          Route-level pages
+  store/          Zustand stores
+  workers/        Pyodide worker and message protocol
+  lib/topics.ts   Topic manifest
 
 server/
-  routes/                # Hono API routes
-  migrations/            # SQLite schema
-  db.ts                  # SQLite initialization
+  routes/         Hono API routes
+  migrations/     SQLite schema
+  db.ts           SQLite initialization
 
 docs/
   ARCHITECTURE.md
@@ -136,11 +176,13 @@ docs/
   PYODIDE_NOTES.md
 ```
 
-Topic pages are currently React-backed through typed study-plan modules, not MDX. The route in [Topic.tsx](src/pages/Topic.tsx) looks up a topic id in the study-plan maps and renders it with [LinearStudyPage.tsx](src/components/LinearStudyPage.tsx).
+More detail is available in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Adding or Editing Study Content
+## Study Content
 
-Topic metadata lives in [src/lib/topics.ts](src/lib/topics.ts). The rendered content lives in module-specific files:
+Topic metadata lives in [src/lib/topics.ts](src/lib/topics.ts).
+
+Rendered study content lives in typed modules:
 
 - [src/content/linearStudyPlans.ts](src/content/linearStudyPlans.ts)
 - [src/content/hashingStudyPlans.ts](src/content/hashingStudyPlans.ts)
@@ -151,55 +193,59 @@ Topic metadata lives in [src/lib/topics.ts](src/lib/topics.ts). The rendered con
 - [src/content/stringStudyPlans.ts](src/content/stringStudyPlans.ts)
 - [src/content/advancedStudyPlans.ts](src/content/advancedStudyPlans.ts)
 
-Each study plan includes:
+The topic route resolves a topic id to a study-plan object and renders it with [src/components/LinearStudyPage.tsx](src/components/LinearStudyPage.tsx).
 
-- `brief`
-- `visualize`
-- `tradeoffs`
-- `drill`
-- `implement`
-- `scale`
-- `patterns`
+## Data Storage
 
-When adding a new topic:
+Invariant stores local data in SQLite:
 
-1. Add the topic to `src/lib/topics.ts`.
-2. Add a matching study-plan object in the appropriate `src/content/*StudyPlans.ts` file.
-3. If the module is new, import its map in `src/pages/Topic.tsx` and include it in the `studyPlan` lookup.
-4. Run `bun run build`.
+- topic progress
+- spaced-repetition review cards
+- mock interview attempts
+- problem attempts
 
-## Data Model
-
-Progress, mock attempts, and SRS review cards are persisted in local SQLite. The default user id is `local`; the schema is prepared for multiple users later.
+The default user id is `local`; the schema is ready for multiple users later.
 
 Main API routes:
 
-- `GET/PUT /api/progress`
-- `POST /api/attempts`
-- `GET/POST /api/srs`
-- `POST/GET /api/mock`
 - `GET /api/health`
+- `GET /api/progress`
+- `PUT /api/progress`
+- `POST /api/attempts`
+- `GET /api/srs`
+- `POST /api/srs`
+- `POST /api/mock`
+- `GET /api/mock/history`
 
-## Design Notes
+## Development Notes
 
-Invariant is intentionally local-first:
+- Topic content is currently React/TypeScript-backed, not MDX-backed.
+- The production build is the primary sanity check: `bun run build`.
+- `bun run lint` may surface older lint debt in server/worker files.
+- Generated artifacts such as `node_modules`, `dist`, Playwright output, screenshots, and TS build info are ignored.
 
-- No hosted account system
-- No cloud sync
-- SQLite-backed progress on the local machine
-- Browser-executed Python in a worker sandbox
+## Roadmap
 
-This makes it fast to iterate on content and safe to run interview-practice code without sending it to a remote executor.
+Potential next steps:
 
-## Verification Status
+- Real interactive visualizers for each topic trace
+- Monaco-backed exercises on every Implement step
+- Better generated test harnesses for study-plan exercises
+- Search and filtering over topics
+- Cloud sync or export/import for progress
+- Hosted deployment packaging
 
-Recently verified:
+## Contributing
 
-- `bun run build`
-- Scoped Biome checks on touched study-plan files
-- Browser smoke checks across representative topic routes
-- `/api/progress` returning 200 during dev-server verification
+Contributions are welcome. For content changes:
+
+1. Update the relevant `src/content/*StudyPlans.ts` module.
+2. Keep the matching metadata in `src/lib/topics.ts` aligned.
+3. Run `bun run build`.
+4. Include screenshots or notes if UI layout changes.
+
+For architecture context, read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/DECISIONS.md](docs/DECISIONS.md).
 
 ## License
 
-No license has been selected yet.
+Invariant is licensed under the [MIT License](LICENSE).
