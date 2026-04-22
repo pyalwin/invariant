@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.playwright-mcp/
+
+*.tsbuildinfo
+*.log
+
+.env
+.DS_Store
+
+linear-study-page.png

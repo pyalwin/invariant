@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-white text-black antialiased;
+  }
+
+  * {
+    @apply border-black/10;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-black;
+  }
+
+  ::selection {
+    @apply bg-black/10;
+  }
+
+  code, pre, .font-mono {
+    font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme(colors.zinc.300) transparent;
+  }
+}
